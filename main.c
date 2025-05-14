@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 // Arithmetic functions.
 // TODO: Function definitions.
@@ -16,7 +17,12 @@ int main() {
     
     while (!shouldClose) {
         char input[128];
+
+        double left = 0;
+        double right = 0;
         double result = 0;
+
+        bool operationFound = false;
 
         printf("%s\n", "Enter an expression with only one operation. (type exit to close)");
         fgets(input, 128, stdin);
@@ -30,7 +36,36 @@ int main() {
             break;
         }
 
-        // TODO: Input parsing.
+        for (char *c = input; *c != '\0'; c++) {
+            // Skip newlines.
+            if (*c == ' ') {
+                continue;
+            }
+
+            if (isdigit(*c)) {
+                
+
+                continue;
+            }
+            
+            switch (*c) {
+                case '+':
+                    operationFound = true;
+                    break;
+                case '-':
+                    operationFound = true;
+                    break;
+                case '*':
+                    operationFound = true;
+                    break;
+                case '/':
+                    operationFound = true;
+                    break;
+                default:
+                    puts("Invalid character found.");
+                    break;
+            }
+        }
 
         printf("Result: %lf\n\n", result);
     }
