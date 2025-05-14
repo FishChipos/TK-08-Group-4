@@ -8,5 +8,10 @@ double multiply(double a, double b);
 double divide(double a, double b);
 
 int main() {
+    double mul = multiply(a, b);
     return 0;
+}
+
+double multiply(double a, double b) {
+    return a*b;
 }
