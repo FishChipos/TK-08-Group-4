@@ -4,12 +4,26 @@
 #include <ctype.h>
 #include <math.h>
 
+typedef enum {
+    OPERATION_ADD = 0,
+    OPERATION_SUBTRACT,
+    OPERATION_MULTIPLY,
+    OPERATION_DIVIDE
+} Operation;
+
+const char operationChars[] = {'+', '-', '*', '/'};
+
 // Arithmetic functions.
-// TODO: Function definitions.
+
 double add(double a, double b);
 double subtract(double a, double b);
 double multiply(double a, double b);
 double divide(double a, double b);
+
+// Parsing functions.
+
+// Parses a string for a number given an inclusive start and end index.
+double parseNumber(char *string, size_t start, size_t end);
 
 int main() {
     bool shouldClose = false;
@@ -23,7 +37,8 @@ int main() {
         double right = 0;
         double result = 0;
 
-        bool operationFound = false;
+        Operation operation = -1;
+        size_t operationIndex;
 
         printf("%s\n", "Enter an expression with only one operation. (type exit to close)");
         fgets(input, 128, stdin);
@@ -37,35 +52,42 @@ int main() {
             break;
         }
 
+        // Find the operation.
         for (char *c = input; *c != '\0'; c++) {
             // Skip newlines.
             if (*c == ' ') {
                 continue;
             }
 
-            if (isdigit(*c)) {
-                
+            for (Operation operationCandidate = 0; operationCandidate < 4; operationCandidate++) {
+                if (*c == operationChars[operationCandidate]) {
+                    operation = operationCandidate;
+                    operationIndex = c - input;
+                    break;
+                }
+            }
+        }
 
+        // Parse the left and right numbers.
+        left = parseNumber(input, 0, operationIndex - 1);
+        right = parseNumber(input, operationIndex + 1, strlen(input) - 1);
+
+        switch (operation) {
+            case OPERATION_ADD:
+                result = add(left, right);
+                break;
+            case OPERATION_SUBTRACT:
+                result = subtract(left, right);
+                break;
+            case OPERATION_MULTIPLY:
+                result = multiply(left, right);
+                break;
+            case OPERATION_DIVIDE:
+                result = divide(left, right);
+                break;
+            default:
+                puts("No operation found!\n");
                 continue;
-            }
-            
-            switch (*c) {
-                case '+':
-                    operationFound = true;
-                    break;
-                case '-':
-                    operationFound = true;
-                    break;
-                case '*':
-                    operationFound = true;
-                    break;
-                case '/':
-                    operationFound = true;
-                    break;
-                default:
-                    puts("Invalid character found.");
-                    break;
-            }
         }
 
         printf("Result: %lf\n\n", result);
@@ -95,5 +117,17 @@ double divide(double a, double b) {
 		return NAN;
 	}
 	
-	return a/b;
+	return a / b;
+}
+
+double parseNumber(char *string, size_t start, size_t end) {
+    double number = 0;
+    size_t digit = end - start;
+
+    for (size_t i = start; i <= end; i++) {
+        number += (string[i] - '0') * pow(10, digit);
+        digit--;
+    }
+
+    return number;
 }
