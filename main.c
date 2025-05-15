@@ -77,5 +77,9 @@ int main() {
 }
 
 double multiply(double a, double b) {
-    return a*b;
+    return a * b;
+}
+
+double add(double a, double b) {
+    return a + b;
 }
