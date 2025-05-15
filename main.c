@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
 // Arithmetic functions.
 // TODO: Function definitions.
@@ -84,8 +85,13 @@ double add(double a, double b) {
     return a + b;
 }
 
-double substract(double a, double b) {
-    return a - b;
+double divide(double a, double b) {
+    if(b == 0){
+    	printf("Can't divide by zero.");
+		return NAN;
+	}
+	
+	return a/b;
 }
 
 double subtract(double a, double b){
